@@ -21,6 +21,7 @@
     - 服务间联调测试
     - 网关调用方式变更
     - 网关联调测试
+- 适配 Oracle 数据源，编译适配 Oracle 包：nacos-server-oracle-1.2.1.zip
 
 ## 版本选择
 
@@ -231,4 +232,13 @@ public class GoodsApp {
 }
 ```
 
+## 适配 Oracle
+
+1. fork nacos 仓库并 clone
+2. 切换分支 feature_multiple_datasource_support
+3. 修改 nacos-all 和 nacos-config 依赖，更换为需要适配的驱动
+4. 修改 nacos-config 主键生成策略（mysql 为自增长，Oracle 需要调整为序列）
+5. 修改数据源配置，单机启动测试
+6. 合并分支
+7. 打包
 

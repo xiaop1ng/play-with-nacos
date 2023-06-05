@@ -3,7 +3,8 @@
 
 - server-order 订单服务
 - server-goods 商品服务
-- server-zuul 网关
+- ~~server-zuul 网关~~
+- server-gateway 网关
 
 
 ## todo
@@ -21,33 +22,28 @@
     - 服务间联调测试
     - 网关调用方式变更
     - 网关联调测试
-- 适配 Oracle 数据源，编译适配 Oracle 包：nacos-server-oracle-1.2.1.zip
 
 ## 版本选择
 
-当前 SpringBoot 版本：2.0.4.RELEASE
+[使用初始化工具选择版本](https://start.aliyun.com/)
+
+JDK 版本 1.8
+
+升级 SpringBoot 版本：2.7.6
 
 [官方](https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E)建议版本
 Spring Cloud Version
-> Spring Cloud Finchley
+> 2021.0.5
 
 Spring Cloud Alibaba Version
-> ~~2.0.4.RELEASE(停止维护，建议升级)~~
-
-> 测试 2.0.4 版本依赖 `InstancePreRegisteredEvent` 为 SpringBoot 2.0.4 之后的版本中加入的类，应用启动会报找不到该类，可以降版本到 2.0.2
-
-> 2.0.2.RELEASE
+> 2021.0.5.0
 
 Nacos Version
-> ~~1.4.1~~
-
-> 1.2.1
+> 2.2.0
 
 ## Nacos Server
 
-~~https://github.com/alibaba/nacos/releases/download/1.4.1/nacos-server-1.4.1.zip~~
-
-https://github.com/alibaba/nacos/releases/download/1.2.1/nacos-server-1.2.1.zip
+https://github.com/alibaba/nacos/releases/download/2.2.0/nacos-server-2.2.0.zip
 
 ## 集群部署 Nacos
 
@@ -121,25 +117,21 @@ server:
     port: 8080
 ```
 
-- zuul-dev.yaml
+- gateway-dev.yaml
 ```
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          # 是否从注册中心读取服务，只要你的路径中以微服务的服务名称开头，都会自动转发到该服务上去
+          enabled: true
+          # eureka 中服务名默认为大写 服务名大写转小写
+          lowerCaseServiceId: true
 server:
-    port: 8088
-CROS: true
-zuul:
-    host:
-        connect-timeout-millis: 600000
-        socket-timeout-millis: 600000
-    prefix: /api
-    routes:
-        goods:
-            # 以/api/goods/ 开头的请求都转发给goods服务
-            service-id: goods
-            path: /goods/** 
-        order:
-            # 以/api/order/ 开头的请求都转发给order服务
-            service-id: order
-            path: /order/**
+  port: 8088
 ```
 
 测试：
@@ -148,60 +140,10 @@ req: http://127.0.0.1:80/goods/price
 res: 1499
 req: http://127.0.0.1:8080/order/create
 res: 创建订单成功，订单金额：1499
-req: http://127.0.0.1:8088/api/goods/goods/price
+req: http://127.0.0.1:8088/goods/goods/price
 res: 1499
-req: http://127.0.0.1:8088/api/order/order/create
+req: http://127.0.0.1:8088/order/order/create
 res: 创建订单成功，订单金额：1499
-```
-
-## 添加依赖
-```
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.4.RELEASE</version>
-    </parent>
-    
-    <dependencies>
-        <!-- nacos配置中心 -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-        </dependency>
-        
-        <!-- nacos服务发现 -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-    
-    </dependencies>
-    
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.0.4.RELEASE</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Finchley.RELEASE</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>2.0.2.RELEASE</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 ```
 
 ## 使用 Nacos Config
@@ -232,13 +174,4 @@ public class GoodsApp {
 }
 ```
 
-## 适配 Oracle
-
-1. fork nacos 仓库并 clone
-2. 切换分支 feature_multiple_datasource_support
-3. 修改 nacos-all 和 nacos-config 依赖，更换为需要适配的驱动
-4. 修改 nacos-config 主键生成策略（mysql 为自增长，Oracle 需要调整为序列）
-5. 修改数据源配置，单机启动测试
-6. 合并分支
-7. 打包
 

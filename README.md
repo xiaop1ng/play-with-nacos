@@ -41,9 +41,19 @@ Spring Cloud Alibaba Version
 Nacos Version
 > 2.2.0
 
+Seata Version
+> 1.6.1
+
+Sentinel Version
+> 1.8.6
+
 ## Nacos Server
 
 https://github.com/alibaba/nacos/releases/download/2.2.0/nacos-server-2.2.0.zip
+
+## Seata Server
+
+https://github.com/seata/seata/releases/download/v1.6.1/seata-server-1.6.1.zip
 
 ## 集群部署 Nacos
 

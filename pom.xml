@@ -20,6 +20,8 @@
         <module>server-zuul</module>
         <module>server-goods</module>
         <module>server-gateway</module>
+        <module>server-order-db</module>
+        <module>service-goods-db</module>
     </modules>
 
     <properties>
@@ -65,10 +67,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>-->
-<!--        </dependency>-->
+
 <!--        <dependency>-->
 <!--            <groupId>com.alibaba.cloud</groupId>-->
 <!--            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>-->

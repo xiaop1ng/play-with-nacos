@@ -91,6 +91,56 @@ https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html
 访问 http://127.0.0.1:8848/nacos/#/login 账号密码默认均为 nacos
 查看 集群管理 > 节点列表
 
+## 部署 seata 以 nacos 作为注册中心
+
+
+配置 `./conf/application.yml` seata 部分
+```
+seata:
+  config:
+    # support: nacos, consul, apollo, zk, etcd3
+    type: nacos
+    nacos:
+      # 服务地址
+      server-addr: 127.0.0.1:8848
+      group: DEFAULT_GROUP
+      username: nacos
+      password: nacos
+      data-id: seata-dev.yaml
+  registry:
+    # support: nacos, eureka, redis, zk, consul, etcd3, sofa
+    type: nacos
+    nacos:
+      application: seata
+      # 服务地址
+      server-addr: 127.0.0.1:8848
+      group: DEFAULT_GROUP
+      cluster: default
+      username: nacos
+      password: nacos
+  store:
+    # support: file 、 db 、 redis
+    mode: db
+    db:
+      datasource: druid
+      db-type: mysql
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/nacos?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
+      user: root
+      password: 123456
+      min-conn: 10
+      max-conn: 100
+      global-table: global_table
+      branch-table: branch_table
+      lock-table: lock_table
+      distributed-lock-table: distributed_lock
+      query-limit: 1000
+      max-wait: 5000
+```
+
+启动
+> sh seata-server.sh
+
 ## 添加配置
 
 DataId:
@@ -184,4 +234,8 @@ public class GoodsApp {
 }
 ```
 
+## nacos & seata 服务配置文件
+
+- nacos/conf
+- seata/conf
 

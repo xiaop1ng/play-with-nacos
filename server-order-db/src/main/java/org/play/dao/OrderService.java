@@ -1,4 +1,4 @@
-package org.play.service;
+package org.play.dao;
 
 
 import org.play.entity.Order;

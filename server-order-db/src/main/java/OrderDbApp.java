@@ -1,25 +1,27 @@
-//import io.seata.spring.annotation.GlobalTransactional;
 import io.seata.spring.annotation.GlobalTransactional;
+import org.play.dao.OrderService;
 import org.play.entity.Order;
 import org.play.service.GoodsService;
-import org.play.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/order-db")
+@RequestMapping("/order")
 @SpringBootApplication(scanBasePackages = "org.play")
+@EnableJpaRepositories(basePackages = "org.play.dao")
+@EntityScan(basePackages = "org.play.entity")
 // 开启服务注册发现功能
 @EnableDiscoveryClient
-// 开启 feign 远程方法调用
-@EnableFeignClients
+@EnableFeignClients(basePackages = "org.play.service")
 // 启用全局事务管理
 @EnableTransactionManagement
 public class OrderDbApp {
@@ -36,10 +38,11 @@ public class OrderDbApp {
     @GetMapping("/create")
     public Order create() {
         Order order = new Order();
+        order.setCreateTime(System.currentTimeMillis());
         Order insert = orderService.save(order);
         boolean success = goodsService.sell();
         if (!success) throw new RuntimeException("商品已售罄，下单失败");
-        return order;
+        return insert;
     }
 
 

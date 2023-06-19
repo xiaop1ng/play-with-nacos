@@ -1,13 +1,17 @@
 package org.play.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 
 @Entity
+@Table(name = "orders")
 public class Order {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderNo;
+
+    private Long createTime;
 
 
     public Long getOrderNo() {
@@ -16,5 +20,13 @@ public class Order {
 
     public void setOrderNo(Long orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 }

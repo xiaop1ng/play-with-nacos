@@ -5,6 +5,8 @@
 - server-goods 商品服务
 - ~~server-zuul 网关~~
 - server-gateway 网关
+- server-order-db 订单服务(with seata AT mode)
+- server-goods-db 商品服务(with seata AT mode)
 
 
 ## todo
@@ -22,6 +24,8 @@
     - 服务间联调测试
     - 网关调用方式变更
     - 网关联调测试
+- 分布式事务
+- 流控
 
 ## 版本选择
 

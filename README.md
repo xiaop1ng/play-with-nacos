@@ -141,6 +141,9 @@ seata:
 启动
 > sh seata-server.sh
 
+控制台地址
+http://127.0.0.1:7091/ 默认用户名密码均为 seata
+
 ## 添加配置
 
 DataId:

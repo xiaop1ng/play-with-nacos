@@ -59,6 +59,10 @@ https://github.com/alibaba/nacos/releases/download/2.2.0/nacos-server-2.2.0.zip
 
 https://github.com/seata/seata/releases/download/v1.6.1/seata-server-1.6.1.zip
 
+## Sentinel Dashboard
+
+
+
 ## 集群部署 Nacos
 
 https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html
@@ -147,6 +151,36 @@ seata:
 
 控制台地址
 http://127.0.0.1:7091/ 默认用户名密码均为 seata
+
+## 启动 Sentinel
+
+> java -Dserver.port=88 -Dcsp.sentinel.dashboard.server=localhost:88 -Dproject.name=sentinel-dashboard -jar sentinel-dashboard-1.8.6.jar
+
+
+
+配置应用：
+```yaml
+spring:
+    cloud:
+        # 流控
+        sentinel:
+            transport:
+                # 默认端口 8719
+                port: 8719
+                dashboard: localhost:88
+```
+
+@SentinelResource 注解配置资源，然后可以在控制台为资源配置流控规则；主要控制权在 sentinel-dashboard
+
+
+- 流控
+- 降级
+- 热点
+- 授权
+
+sentinel 规则持久化
+可以选择 Nacos/Redis
+
 
 ## 添加配置
 

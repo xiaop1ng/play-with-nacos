@@ -61,7 +61,7 @@ https://github.com/seata/seata/releases/download/v1.6.1/seata-server-1.6.1.zip
 
 ## Sentinel Dashboard
 
-
+https://github.com/alibaba/Sentinel/releases
 
 ## 集群部署 Nacos
 
@@ -171,7 +171,7 @@ spring:
 ```
 
 @SentinelResource 注解配置资源，然后可以在控制台为资源配置流控规则；主要控制权在 sentinel-dashboard
-
+流控规则添加快速失败
 
 - 流控
 - 降级
@@ -181,6 +181,7 @@ spring:
 sentinel 规则持久化
 可以选择 Nacos/Redis
 
+文档地址 https://sentinelguard.io/zh-cn/docs/quick-start.html
 
 ## 添加配置
 
@@ -279,4 +280,5 @@ public class GoodsApp {
 
 - nacos/conf
 - seata/conf
+- sentinel/conf
 

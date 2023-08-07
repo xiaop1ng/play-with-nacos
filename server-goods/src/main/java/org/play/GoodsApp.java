@@ -1,5 +1,6 @@
 package org.play;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +21,7 @@ public class GoodsApp {
     @Value("${goods.price:100}")
     private Long price;
 
+    @SentinelResource("goodsPrice")
     @GetMapping("/price")
     public Long get() {
         // @RefreshScope 会刷新 price 的值
